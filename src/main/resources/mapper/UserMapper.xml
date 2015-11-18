@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yaxin.userCenter.dao.mapper.UserMapper">
+
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByName" parameterType="java.lang.Integer" >
+    delete from user
+    where username = #{username,jdbcType=VARCHAR}
+  </delete>
+  <select id="findById" resultType="com.yaxin.userCenter.model.item.User">
+    select * from user where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findByName" resultType="com.yaxin.userCenter.model.item.User">
+    select * from user where username = #{username,jdbcType=VARCHAR}
+  </select>
+  <insert id="insert" parameterType="com.yaxin.userCenter.model.item.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="comments != null" >
+        comments,
+      </if>
+      <if test="userType != null" >
+        userType,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.yaxin.userCenter.model.item.User" >
+    update user
+      <set >
+      <if test="username != null" >
+        username =  #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="comments != null" >
+        comments = #{comments,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        userType = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status =  #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+      where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
