@@ -31,11 +31,9 @@ public class DeleteUserService extends BaseService {
     protected Result handle(String req) throws Exception {
         Map<String, Object> map = (Map<String, Object>) JSONObject.toBean(JSONObject.fromObject(req), Map.class);
         //真正的删除业务会加入很多业务方面的判断，这里只实现了最简单的功能
-        Result result;
         User user=beanFactory.getUserItem();
         user.setId(Integer.valueOf(String.valueOf(map.get("id"))));
         user.delete();
-        result = new Result(null, 1, "OK");
-        return result;
+        return new Result().succeeded("OK");
     }
 }
