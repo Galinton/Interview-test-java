@@ -5,14 +5,13 @@
 业务层不在直接调用dao层，而是通过model的状态改变直接作用于数据层，有model来维护实体与数据库之间的状态同步。
 
 ##数据库准备环境:
-1. 工程标配了一个云服务器的 mysql 和 redis(之后开通) 用于测试。
-2. 可自行准备 mysql 和 redis 库，【本例中创建的数据库名称为test，配置在application.properties中，建表脚本在工程中user.sql】
+1.  工程标配了一个云服务器的 mysql 和 redis(之后开通) 用于测试。
+2.  可自行准备 mysql 和 redis 库，【本例中创建的数据库名称为test，配置在application.properties中，建表脚本在工程中user.sql】
 
 ##运行
-通过Main类: Application 类中的 main 方法进行启动。
-1.在工程下使用命令 mvn package 打jar包
-2.进入tager目录，使用命令 java -jar【包名】启动工程
-3.通过浏览器进行访问
+1.  在工程下使用命令 mvn package 打jar包
+2.  进入tager目录，使用命令 java -jar【包名】启动工程
+3.  通过浏览器进行访问
 
 ##配置文件说明
 1.  resources为资源配置文件。
@@ -21,7 +20,7 @@
 3.  UserMapper.xml为mybatis的配置文件。
 
 ##待完善
-1.junit的完善
-2.redis缓存的完善
-3.统一日志机制完善
-4.统一异常机制完善
+1.  junit的完善
+2.  redis缓存的完善
+3.  统一日志机制完善
+4.  统一异常机制完善
