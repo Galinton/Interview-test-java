@@ -36,6 +36,7 @@ public class RedisCaching extends CachingConfigurerSupport {
                 for (Object obj : params) {
                     sb.append(obj.toString());
                 }
+                System.out.print(sb.toString());
                 return sb.toString();
             }
         };

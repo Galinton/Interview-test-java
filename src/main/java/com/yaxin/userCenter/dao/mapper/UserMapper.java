@@ -13,11 +13,11 @@ public interface UserMapper {
 
 	public void deleteById(Integer id);
 
-	public void deleteByName(String username);
+	public void deleteByName(String loginname);
 
 	public User findById(Integer id);
 
-	public User findByName(String username);
+	public User findByName(String loginname);
 
 	public void update(User user);
 

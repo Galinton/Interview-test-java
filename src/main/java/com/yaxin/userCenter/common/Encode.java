@@ -1,15 +1,30 @@
 package com.yaxin.userCenter.common;
 
+
+
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import java.security.MessageDigest;
 
 public class Encode {
-    public static String base64(String str) throws Exception {
-        byte[] encodeBase64 = Base64.encodeBase64(str.getBytes("UTF-8"));
-        return encodeBase64.toString();
+
+    public static void main(String[] arge) throws Exception {
+        String a = Encode.base64Encode("wang@qq.com");
+        String b = Encode.base64Decode(a);
+        System.out.println(a);
+        System.out.println(b);
+
+        System.out.print(Encode.stringToMD5("222222"));
+    }
+    public static String base64Encode(String str) throws Exception {
+        String encodeBase64 = Base64.encodeBase64URLSafeString(str.getBytes("UTF-8"));
+        return encodeBase64;
     }
 
+    public static String base64Decode(String str) throws Exception {
+        byte[] decodeBase64 = Base64.decodeBase64(str.getBytes("UTF-8"));
+        return new String(decodeBase64);
+    }
     public static String stringToMD5(String str) {
         byte[] input = str.getBytes();
         String md5str = null;

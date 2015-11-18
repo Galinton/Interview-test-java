@@ -8,19 +8,22 @@
     delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByName" parameterType="java.lang.Integer" >
+  <delete id="deleteByName" parameterType="java.lang.String" >
     delete from user
-    where username = #{username,jdbcType=VARCHAR}
+    where loginname = #{loginname,jdbcType=VARCHAR}
   </delete>
   <select id="findById" resultType="com.yaxin.userCenter.model.item.User">
     select * from user where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="findByName" resultType="com.yaxin.userCenter.model.item.User">
-    select * from user where username = #{username,jdbcType=VARCHAR}
+    select * from user where loginname = #{loginname,jdbcType=VARCHAR}
   </select>
   <insert id="insert" parameterType="com.yaxin.userCenter.model.item.User" >
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="loginname != null">
+        loginname,
+      </if>
       <if test="username != null" >
         username,
       </if>
@@ -41,6 +44,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="loginname != null" >
+        #{loginname,jdbcType=VARCHAR},
+      </if>
       <if test="username != null" >
         #{username,jdbcType=VARCHAR},
       </if>
@@ -83,6 +89,6 @@
         status =  #{status,jdbcType=VARCHAR},
       </if>
     </set>
-      where id = #{id,jdbcType=INTEGER}
+      where loginname = #{loginname,jdbcType=INTEGER}
   </update>
 </mapper>

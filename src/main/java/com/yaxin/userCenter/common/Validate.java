@@ -1,5 +1,7 @@
 package com.yaxin.userCenter.common;
 
+import net.sf.json.JSONObject;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -29,19 +31,19 @@ public class Validate {
     /**
      * 判断 keys中的参数是否都在map中
      *
-     * @param map
+     * @param param
      * @param keys
      * @return
      */
-    public static boolean existByJson(Map<String, Object> map, String... keys) throws Exception {
-        if (Validate.checkObject(map) || Validate.checkObject(keys))
-            return false;
+    public static void existByJson(JSONObject param, String... keys) throws Exception {
+        if (Validate.checkObject(param) || Validate.checkObject(keys))
+            throw new Exception("传入的参数有为空.请检查传入的参数. " + param.toString());
         for (String key : keys) {
-            if (!map.containsKey(key))
-                return false;
+            if (!param.containsKey(key))
+                throw new Exception("传入的参数有误.请检查传入的参数. " + param.toString());
         }
-        return true;
     }
+
 
     /**
      * 判断对象是否为空
@@ -58,7 +60,7 @@ public class Validate {
      * @param str
      * @return
      */
-    public static boolean checkParameter(String str) {
+    public static boolean checkParameter(Object str) {
         return str == null || "".equals(str) ? true : false;
     }
 

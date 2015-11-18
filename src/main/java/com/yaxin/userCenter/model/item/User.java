@@ -9,12 +9,15 @@ public class User implements Repository {
     UserMapper userMapper;
 
     private Integer id;
+    private String loginname;
     private String username;
     private String nickname;
     private String password;
     private String comments;
     private String userType;
     private String status;
+
+    public User(){}
 
     public User(UserMapper userMapper) {
         this.userMapper = userMapper;
@@ -32,7 +35,7 @@ public class User implements Repository {
 
     @Override
     public void delete() {
-        userMapper.deleteById(this.id);
+        userMapper.deleteByName(this.loginname);
     }
 
     @Override
@@ -42,7 +45,7 @@ public class User implements Repository {
 
     @Override
     public Repository findByName() {
-        return userMapper.findByName(this.username);
+        return userMapper.findByName(this.loginname);
     }
 
     /* ------------------------------------------------------------------------------ */
@@ -103,5 +106,11 @@ public class User implements Repository {
         this.password = password;
     }
 
+    public String getLoginname() {
+        return loginname;
+    }
 
+    public void setLoginname(String loginname) {
+        this.loginname = loginname;
+    }
 }

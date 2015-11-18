@@ -18,94 +18,99 @@ public abstract class BaseService {
     /**
      * 外部调用执行接口
      *
-     * @param req 使用json格式和web层进行通讯，而不使用通用的bean模式，
+     * @param param 使用json格式和web层进行通讯，而不使用通用的bean模式，
      *            主要是为了使web层和service层强行分离，强迫开发人员在开发过程中使用接口方式进行开发。
      * @return
      */
-    public Result execute(String req) {
+    public Result execute(JSONObject param) {
         long startTime = System.currentTimeMillis();
-        Result resp = null;
+        Result result = null;
         try {
-            if (Validate.checkParameter(req))
+            if (Validate.checkParameter(param))
                 throw new Exception("传入参数为空。");
-            Map<String, Object> map = (Map<String, Object>) JSONObject.toBean(JSONObject.fromObject(req), Map.class);
-            validate(map);
-            resp = handle(req);
+            before(param);
+            result = handle(param);
+            after(param,result);
         } catch (Exception e) {
-            resp = new Result().error( e.getMessage());  //可以在这做通用异常处理，比如监控报警什么的。本例之做了简单的示例
+            logger.error("异常",e); //可以对异常进行分类处理，可以做日志格式统一化等等，暂不细做
+            result = new Result().error(e.getMessage());  //可以在这做通用异常处理，比如监控报警什么的。本例之做了简单的示例
         }
         long stopTime = System.currentTimeMillis();
         logger.debug("service运行时间:" + String.valueOf(stopTime - startTime));
-        return resp;
+        return result;
     }
 
     /**
-     * 参数校验
+     * 方法执行前需要的操作
      *
-     * @param map
+     * @param param
      */
-    protected abstract void validate(Map<String, Object>  map) throws Exception;
+    protected  void before(JSONObject param) throws Exception{}
+
+    /**
+     * 方法执行后需要的操作
+     *
+     */
+    protected  void after(JSONObject param,Result result) throws Exception{}
 
     /**
      * 业务处理
      *
-     * @param req
+     * @param param
      * @return
      * @throws Exception
      */
-    protected abstract Result handle(String req) throws Exception;
+    protected abstract Result handle(JSONObject param) throws Exception;
 
     //通用业务层结果包装类
-    public class Result {
+    public static class Result {
         //返回结果
-        public String data;
+        private JSONObject data;
         //状态 -1 系统异常 ；0 业务错误 ；1 成功
-        public int state;
+        private int state;
         //异常信息提示
-        public String message;
+        private String message;
+
         public Result() {
         }
-        public Result(String data) {
+
+        public Result(JSONObject data) {
             this.data = data;
         }
-        public Result succeeded(String message){
+
+        public Result(Map data) {
+            this.data = JSONObject.fromObject(data);
+        }
+
+        public Result succeeded(String message) {
             this.state = 1;
             this.message = message;
             return this;
         }
-        public Result failed(String message){
+
+        public Result failed(String message) {
             this.state = 0;
             this.message = message;
             return this;
         }
-        public Result error(String message){
+
+        public Result error(String message) {
             this.state = -1;
             this.message = message;
             return this;
         }
-        public String getData() {
-            return data;
+
+        public JSONObject toJson() {
+            JSONObject j = new JSONObject();
+            j.put("message", message==null?"":message);
+            j.put("state", state);
+            if (data != null)
+                j.put("data", data);
+            return j;
         }
 
-        public void setData(String data) {
-            this.data = data;
+        public String toString(){
+            return toJson().toString();
         }
-
-        public int getState() {
-            return state;
-        }
-
-        public void setState(int state) {
-            this.state = state;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
     }
 }
